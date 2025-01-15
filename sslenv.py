@@ -30,16 +30,16 @@ class SSLExampleEnv(SSLBaseEnv):
             high=self.field.length/2,shape=(n_obs, ))
         
         self.targets = []
-        self.min_dist = 0.18
+        self.min_dist = 0.18 ## minimum distance to capture the target
         self.all_points = FixedQueue(max(4, self.max_targets))
         self.robots_paths = [FixedQueue(40) for i in range(11)]
 
         self.rounds = self.max_rounds  ## because of the first round
         self.targets_per_round = 1
 
-        self.my_agents = {0: ExampleAgent(0, False)}
-        self.blue_agents = {i: RandomAgent(i, False) for i in range(1, 11)}
-        self.yellow_agents = {i: RandomAgent(i, True) for i in range(0, 11)}
+        self.my_agents = {0: ExampleAgent(0, False)} # Blue agent that can move
+        self.blue_agents = {i: RandomAgent(i, False) for i in range(1, 11)} # Creates the remaining 10 blue agents
+        self.yellow_agents = {i: RandomAgent(i, True) for i in range(0, 11)} # Creates 11 yellow agents
 
         self.gen_target_prob = 0.003
 
@@ -77,7 +77,7 @@ class SSLExampleEnv(SSLBaseEnv):
             self.rounds = self.max_rounds
             if self.targets_per_round < self.max_targets:
                 self.targets_per_round += 1
-                self.blue_agents.pop(len(self.my_agents))
+                self.blue_agents.pop(len(self.my_agents)) # Means that I will transform previously random agents into dynamic agents
                 self.my_agents[len(self.my_agents)] = ExampleAgent(len(self.my_agents), False)
 
         # Generate new targets
